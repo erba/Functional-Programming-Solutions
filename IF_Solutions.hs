@@ -679,3 +679,13 @@ countGTLeaves GTEmpty = 0
 countGTLeaves (GTLeaf a) = 1
 countGTLeaves (GTNode a branchList) = sum (map countGTLeaves branchList)
 -- for testing: GTNode 'a' [ (GTNode 'b' [GTNode 'd' [GTNode 'h' [GTNode 'e' [GTLeaf 'n', GTLeaf 'o'], GTLeaf 'm'], GTLeaf 'i'] , GTLeaf 'e']) , GTNode 'c' [GTNode 'f' [GTLeaf 'j'], GTNode 'g' [GTLeaf 'k']]]
+
+-----------------
+-- Personal notes
+-----------------
+-- Polymorphic functions must either have a type class in the signature or leave the signature out alltogether and let Haskell infer its
+-- Which operators are defined by Num, Ord, Eq, Show, Read???
+-- $ opens a bracket and closes it as far right as possible
+-- "Foldable t => t a" similar to IList<a> in C#
+-- difference between "zip list1 list2" and "[(l1,l2) | l1 <- list1, l2 <- list2]" ?
+-- [0..3] = [0,1,2,3]    [3..0] = []    [3,2..0] = [3,2,1,0]
