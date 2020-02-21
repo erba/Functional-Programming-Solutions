@@ -683,9 +683,9 @@ countGTLeaves (GTNode a branchList) = sum (map countGTLeaves branchList)
 -----------------
 -- Personal notes
 -----------------
--- Polymorphic functions must either have a type class in the signature or leave the signature out alltogether and let Haskell infer its
+-- Polymorphic functions must either have a type class(Num a=>...) in the signature or leave the signature out all-together and let Haskell infer it
 -- Which operators are defined by Num, Ord, Eq, Show, Read???
 -- $ opens a bracket and closes it as far right as possible
--- "Foldable t => t a" similar to IList<a> in C#
+-- "Foldable t => t a" similar to IList<a> in C#/Java
 -- difference between "zip list1 list2" and "[(l1,l2) | l1 <- list1, l2 <- list2]" ?
 -- [0..3] = [0,1,2,3]    [3..0] = []    [3,2..0] = [3,2,1,0]
