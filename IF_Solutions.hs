@@ -1,4 +1,5 @@
 import Data.Char    -- für digitToInt
+import Data.List
 
 -- chap 2 slide 50
 scalar :: Num a => [a] -> [a] -> a
@@ -646,10 +647,28 @@ plusOne :: Int -> Int
 plusOne x = x + 1
 
 -- 3.7.7
-listToTree :: Eq a => [a] -> [a] -> Tree a
-listToTree [] [] = Empty
-listToTree [x] [y] = Leaf x
--- listToTree (y:x:[]) (x':y':[]) = Node x (Leaf y)
+-- traversal (Tree a)  ->  pre (Tree a) -> Tree a
+listsToTree :: Eq a => [a] -> [a] -> Tree a
+listsToTree [] [] = Empty
+listsToTree (x:[]) (x':[]) = Leaf x    -- Tree is only one Leaf (x == y)
+listsToTree travList@(th:tt) preList@(ph:pt) = Node treeRoot (listsToTree travLeft preLeft) (listsToTree travRight preRight)
+    where
+        treeRoot = preList!!0                                                          -- root is first element of preList
+        travLeft = take (maybeToIndex $ elemIndex treeRoot travList) travList          -- travLeft = all before root in travList
+        travRight = drop ((+1) $ maybeToIndex $ elemIndex treeRoot travList) travList  -- travRight is all after root in travList
+        preLeft = take (length travLeft) (drop 1 preList)                              -- preLeft = drop treeRoot(first element) + take as many elements as travLeft has
+        preRight = drop (length travLeft + 1) preList                                  -- drop treeRoot(firs element) + as many elements as travLeft has
+        maybeToIndex Nothing = -1
+        maybeToIndex (Just x) = x
+-- for testing:
+fullBinaryTreeDepth4 = (Node 'a' (Node 'b' (Node 'd' (Node 'h' (Leaf 'p') (Leaf 'q')) (Node 'i' (Leaf 'r') (Leaf 's'))) (Node 'e' (Node 'j' (Leaf 't') (Leaf 'u')) (Node 'k' (Leaf 'v') (Leaf 'w')))) (Node 'c' (Node 'f' (Node 'l' (Leaf 'x') (Leaf 'y')) (Node 'm' (Leaf 'z') (Leaf '1'))) (Node 'g' (Node 'n' (Leaf '2') (Leaf '3')) (Node 'o' (Leaf '4') (Leaf '5')))))
+derived_fullBinaryTreeDepth4 = listsToTree (traversal fullBinaryTreeDepth4) (pre fullBinaryTreeDepth4)
+--
+someUnevenBinaryTree = Node 'a' (Node 'b' (Node 'c' (Node 'd' (Leaf 'e') Empty) Empty) Empty) Empty
+derived_someUnevenBinaryTree = listsToTree (traversal someUnevenBinaryTree) (pre someUnevenBinaryTree)
+--
+someLongBinaryTree = Node 'a' (Node 'b' (Node 'c' (Node 'e' (Node 'g' (Node 'j' (Node 'l' (Leaf 'm') Empty) Empty) (Leaf 'k')) Empty) (Node 'f' (Leaf 'h') (Leaf 'i'))) (Leaf 'd')) Empty
+derived_someLongBinaryTree = listsToTree (traversal someLongBinaryTree) (pre someLongBinaryTree)
 
 -- 3.8.1
 data GenericTree a = GTEmpty | GTLeaf a | GTNode a [GenericTree a] deriving Show    -- Show for console printing
