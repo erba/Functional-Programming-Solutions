@@ -494,6 +494,10 @@ rounded :: Number -> Int
 rounded (Exact x) = x
 rounded (Approx x) = round x
 
+------------------------
+-- 3.3.* for maybe later
+------------------------
+
 -- 3.4.1
 data Age = Years Int deriving Show
 data Name = Name String String deriving Show
